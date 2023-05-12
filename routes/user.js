@@ -22,12 +22,28 @@ router.put("/:id", verifyAndAuthorization, async (req, res) => {
         req.params.id, {$set: req.body}, {new: true }
     );
 
-    res.status(200).json(updatedUser)
+    res.status(200).json(updatedUser);
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+// DELETE
+
+router.delete("/:id", verifyAndAuthorization, async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.status(200).json("User has been deleted...")
 
     } catch (error) {
         res.status(500).json(error)
     }
 });
+
+// GET USERS 
+
+
 
 
 module.exports = router
