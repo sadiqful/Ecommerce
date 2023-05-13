@@ -55,6 +55,17 @@ router.get("/find/userId", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
+// Allow admin to get all orders
+
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const orders = await Order.find();
+        res.status(200).json(orders)
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 
 module.exports = router
