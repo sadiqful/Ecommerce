@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
     verifyToken,
-    verifyAndAuthorization,
+    verifyTokenAndAuthorization,
     verifyTokenAndAdmin
 } = require("./verifyToken")
 
@@ -22,7 +22,7 @@ router.post("/", verifyToken, async (req, res) => {
 
 // Update a cart - All users with verified token and authorization should be able to update their cart
 
-router.put("/:id", verifyAndAuthorization, async (req, res) => {
+router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 
     try {
         const updatedCart = await Cart.findByIdAndUpdate(
@@ -33,7 +33,16 @@ router.put("/:id", verifyAndAuthorization, async (req, res) => {
     }
 });
 
+// Delete a cart - All users with verified token and authorization should be able to delete their cart
 
+router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        await Cart.findByIdAndDelete(req.params.id);
+        res.status(200).json("Cart deleted!!")
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
 
 module.exports = router
