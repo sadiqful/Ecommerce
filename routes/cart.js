@@ -44,5 +44,16 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
+// Get a cart - All users with verified token and authorization should be able to get their cart
+
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        const cart = await Cart.findOne({userId: req.params.userId});
+        res.status(200).json(cart);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 module.exports = router
