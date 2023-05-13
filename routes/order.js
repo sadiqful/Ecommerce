@@ -33,6 +33,28 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
     
 });
 
+//Allow admin to delete order
+
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        await Order.findByIdAndDelete(req.params.id);
+        res.status(200).json("Order has been deleted...")
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+// Allow admin to get user orders
+
+router.get("/find/userId", verifyTokenAndAuthorization, async (req, res) => {
+     try { 
+        const orders = await Order.findById({userId: req.params.userId});
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 
 module.exports = router
