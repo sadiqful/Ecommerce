@@ -20,6 +20,19 @@ router.post("/", verifyToken, async (req, res) => {
     }
 });
 
+// Update a cart - All users with verified token and authorization should be able to update their cart
+
+router.put("/:id", verifyAndAuthorization, async (req, res) => {
+
+    try {
+        const updatedCart = await Cart.findByIdAndUpdate(
+            req.params.id, {$set: req.body}, {new: true});
+            res.status(200).json(updatedCart);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 
 
